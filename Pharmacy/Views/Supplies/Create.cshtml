@@ -1,0 +1,42 @@
+@model Supply
+@{
+    ViewBag.Title = "Новое поступление";
+    var medicines = ViewBag.Medicines as SelectList;
+    var suppliers = ViewBag.Suppliers as SelectList;
+}
+
+<h1 class="h3 mb-3">Новое поступление</h1>
+
+@using (Html.BeginForm("Create", "Supplies", FormMethod.Post, new { @class = "card card-stat p-3 col-md-7 js-validate-form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="mb-3">
+        @Html.LabelFor(m => m.MedicineId, new { @class = "form-label" })
+        @Html.DropDownListFor(m => m.MedicineId, medicines, "Выберите препарат", new { @class = "form-select", required = "required" })
+        @Html.ValidationMessageFor(m => m.MedicineId, "", new { @class = "text-danger" })
+    </div>
+    <div class="mb-3">
+        @Html.LabelFor(m => m.SupplierId, new { @class = "form-label" })
+        @Html.DropDownListFor(m => m.SupplierId, suppliers, "Выберите поставщика", new { @class = "form-select", required = "required" })
+        @Html.ValidationMessageFor(m => m.SupplierId, "", new { @class = "text-danger" })
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            @Html.LabelFor(m => m.Quantity, new { @class = "form-label" })
+            @Html.TextBoxFor(m => m.Quantity, new { @class = "form-control", type = "number", min = "1", required = "required" })
+            @Html.ValidationMessageFor(m => m.Quantity, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-6 mb-3">
+            @Html.LabelFor(m => m.SupplyDate, new { @class = "form-label" })
+            @Html.TextBoxFor(m => m.SupplyDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", required = "required" })
+            @Html.ValidationMessageFor(m => m.SupplyDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-pharmacy">Сохранить</button>
+        @Html.ActionLink("Отмена", "Index", null, null, new { @class = "btn btn-outline-secondary" })
+    </div>
+}

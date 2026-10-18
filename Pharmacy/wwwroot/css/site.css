@@ -1,0 +1,53 @@
+:root {
+    --pharmacy-green: #1f6b4a;
+    --pharmacy-green-dark: #155337;
+    --bg: #f4f7f5;
+}
+
+html, body {
+    min-height: 100%;
+}
+
+body {
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+}
+
+.app-header {
+    background: linear-gradient(120deg, var(--pharmacy-green), var(--pharmacy-green-dark));
+}
+
+.navbar-brand, .nav-link {
+    color: #fff !important;
+}
+
+.nav-link:hover {
+    opacity: 0.85;
+}
+
+.card-stat {
+    border: 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.table thead th {
+    background: #e8f2ec;
+}
+
+.btn-pharmacy {
+    background: var(--pharmacy-green);
+    border-color: var(--pharmacy-green);
+    color: #fff;
+}
+
+.btn-pharmacy:hover {
+    background: var(--pharmacy-green-dark);
+    border-color: var(--pharmacy-green-dark);
+    color: #fff;
+}
+
+.low-stock {
+    color: #b42318;
+    font-weight: 600;
+}

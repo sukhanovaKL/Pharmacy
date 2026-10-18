@@ -1,0 +1,72 @@
+@model SaleCreateViewModel
+@{
+    ViewBag.Title = "Новая продажа";
+}
+
+<h1 class="h3 mb-3">Новая продажа</h1>
+
+@using (Html.BeginForm("Create", "Sales", FormMethod.Post, new { @class = "card card-stat p-3 js-validate-form", id = "saleForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+    <p class="text-muted">Укажите позиции продажи. Пустые строки игнорируются. Можно добавить строку кнопкой ниже.</p>
+
+    <div id="saleLines">
+        @for (var i = 0; i < Model.Lines.Count; i++)
+        {
+            <div class="row g-2 mb-2 align-items-end sale-line">
+                <div class="col-md-7">
+                    <label class="form-label">Препарат</label>
+                    @Html.DropDownListFor(
+                        m => m.Lines[i].MedicineId,
+                        new SelectList(Model.Medicines, "Value", "Text", Model.Lines[i].MedicineId),
+                        "— не выбрано —",
+                        new { @class = "form-select" })
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Количество</label>
+                    @Html.TextBoxFor(m => m.Lines[i].Quantity, new { @class = "form-control", type = "number", min = "0" })
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-outline-danger w-100 js-remove-line">Убрать</button>
+                </div>
+            </div>
+        }
+    </div>
+
+    <template id="saleLineTemplate">
+        <div class="row g-2 mb-2 align-items-end sale-line">
+            <div class="col-md-7">
+                <label class="form-label">Препарат</label>
+                <select class="form-select" name="Lines[__index__].MedicineId">
+                    <option value="0">— не выбрано —</option>
+                    @foreach (var m in Model.Medicines)
+                    {
+                        <option value="@m.Value">@m.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Количество</label>
+                <input class="form-control" type="number" min="0" name="Lines[__index__].Quantity" value="0" />
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-outline-danger w-100 js-remove-line">Убрать</button>
+            </div>
+        </div>
+    </template>
+
+    <div class="d-flex gap-2 mt-3">
+        <button type="button" class="btn btn-outline-success" id="addSaleLine">+ Позиция</button>
+        <button type="submit" class="btn btn-pharmacy">Оформить</button>
+        @Html.ActionLink("Отмена", "Index", null, null, new { @class = "btn btn-outline-secondary" })
+    </div>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            PharmacyApp.initSaleForm();
+        });
+    </script>
+}

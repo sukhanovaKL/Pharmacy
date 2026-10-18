@@ -1,0 +1,41 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.rsuser
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+artifacts/
+
+## IDE
+.idea/
+.vs/
+*.swp
+*.sln.iml
+.vscode/*
+!.vscode/extensions.json
+
+## OS
+.DS_Store
+Thumbs.db
+
+## Secrets / local overrides
+**/appsettings.*.local.json
+
+## Local caches
+__pycache__/
+*.pyc
+.venv/

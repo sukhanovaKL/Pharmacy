@@ -1,0 +1,77 @@
+@model HomeDashboardViewModel
+@{
+    ViewBag.Title = "Главная";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 mb-1">АС «Аптека»</h1>
+        <p class="text-muted mb-0">Учёт препаратов, поступлений и продаж (MVC)</p>
+    </div>
+    @Html.ActionLink("Оформить продажу", "Create", "Sales", null, new { @class = "btn btn-pharmacy" })
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card card-stat p-3">
+            <div class="text-muted small">Препараты</div>
+            <div class="fs-3 fw-semibold">@Model.MedicinesCount</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card card-stat p-3">
+            <div class="text-muted small">Категории</div>
+            <div class="fs-3 fw-semibold">@Model.CategoriesCount</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card card-stat p-3">
+            <div class="text-muted small">Поставщики</div>
+            <div class="fs-3 fw-semibold">@Model.SuppliersCount</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card card-stat p-3">
+            <div class="text-muted small">Низкий остаток (&lt; 10)</div>
+            <div class="fs-3 fw-semibold @(Model.LowStockCount > 0 ? "low-stock" : "")">@Model.LowStockCount</div>
+        </div>
+    </div>
+</div>
+
+<div class="card card-stat">
+    <div class="card-body">
+        <h2 class="h5 mb-3">Препараты с низким остатком</h2>
+        @if (!Model.LowStockMedicines.Any())
+        {
+            <p class="text-muted mb-0">Все препараты в достаточном количестве.</p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-sm align-middle mb-0">
+                    <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Категория</th>
+                        <th>Остаток</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var m in Model.LowStockMedicines)
+                    {
+                        <tr>
+                            <td>@m.Name</td>
+                            <td>@m.Category?.Name</td>
+                            <td class="low-stock">@m.StockQuantity</td>
+                            <td class="text-end">
+                                @Html.ActionLink("Поступление", "Create", "Supplies", new { medicineId = m.Id }, new { @class = "btn btn-sm btn-outline-success" })
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

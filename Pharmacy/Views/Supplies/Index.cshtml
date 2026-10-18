@@ -1,0 +1,41 @@
+@model IEnumerable<Supply>
+@{
+    ViewBag.Title = "Поступления";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Поступления</h1>
+    @Html.ActionLink("Оформить поступление", "Create", null, null, new { @class = "btn btn-pharmacy" })
+</div>
+
+<div class="table-responsive card card-stat">
+    <table class="table align-middle mb-0" id="dataTable">
+        <thead>
+        <tr>
+            <th>Дата</th>
+            <th>Препарат</th>
+            <th>Поставщик</th>
+            <th>Количество</th>
+            <th class="text-end">Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.SupplyDate.ToString("dd.MM.yyyy")</td>
+                <td>@item.Medicine?.Name</td>
+                <td>@item.Supplier?.Name</td>
+                <td>@item.Quantity</td>
+                <td class="text-end">
+                    @using (Html.BeginForm("Delete", "Supplies", new { id = item.Id }, FormMethod.Post, true, new { @class = "d-inline js-confirm-delete", data_confirm = "Удалить поступление и уменьшить остаток?" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Удалить</button>
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

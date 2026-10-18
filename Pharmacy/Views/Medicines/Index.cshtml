@@ -1,0 +1,64 @@
+@model MedicineFilterViewModel
+@{
+    ViewBag.Title = "Препараты";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Препараты</h1>
+    @Html.ActionLink("Создать", "Create", null, null, new { @class = "btn btn-pharmacy" })
+</div>
+
+@using (Html.BeginForm("Index", "Medicines", FormMethod.Get, new { @class = "row g-2 mb-3" }))
+{
+    <div class="col-md-4">
+        @Html.TextBox("search", Model.Search, new { @class = "form-control", placeholder = "Поиск по названию или производителю" })
+    </div>
+    <div class="col-md-3">
+        @Html.DropDownList(
+            "categoryId",
+            new SelectList(Model.Categories, "Value", "Text", Model.CategoryId?.ToString()),
+            "Все категории",
+            new { @class = "form-select" })
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-outline-secondary" type="submit">Найти</button>
+        @Html.ActionLink("Сброс", "Index", null, null, new { @class = "btn btn-link" })
+    </div>
+}
+
+<div class="table-responsive card card-stat">
+    <table class="table align-middle mb-0" id="dataTable">
+        <thead>
+        <tr>
+            <th>Название</th>
+            <th>Производитель</th>
+            <th>Категория</th>
+            <th>Цена</th>
+            <th>Остаток</th>
+            <th>Рецепт</th>
+            <th class="text-end">Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Medicines)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Manufacturer</td>
+                <td>@item.Category?.Name</td>
+                <td>@item.Price.ToString("N2") ₽</td>
+                <td class="@(item.StockQuantity < 10 ? "low-stock" : "")">@item.StockQuantity</td>
+                <td>@(item.RequiresPrescription ? "Да" : "Нет")</td>
+                <td class="text-end">
+                    @Html.ActionLink("Изменить", "Edit", new { id = item.Id }, new { @class = "btn btn-sm btn-outline-primary" })
+                    @using (Html.BeginForm("Delete", "Medicines", new { id = item.Id }, FormMethod.Post, true, new { @class = "d-inline js-confirm-delete", data_confirm = "Удалить препарат?" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Удалить</button>
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

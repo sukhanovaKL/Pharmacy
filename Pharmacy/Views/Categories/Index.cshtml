@@ -1,0 +1,48 @@
+@model IEnumerable<Category>
+@{
+    ViewBag.Title = "Категории";
+    var search = ViewBag.Search as string;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Категории</h1>
+    @Html.ActionLink("Создать", "Create", null, null, new { @class = "btn btn-pharmacy" })
+</div>
+
+@using (Html.BeginForm("Index", "Categories", FormMethod.Get, new { @class = "row g-2 mb-3 js-live-filter" }))
+{
+    <div class="col-md-6">
+        @Html.TextBox("search", search, new { @class = "form-control", placeholder = "Поиск по названию", id = "searchBox" })
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-outline-secondary" type="submit">Найти</button>
+        @Html.ActionLink("Сброс", "Index", null, null, new { @class = "btn btn-link" })
+    </div>
+}
+
+<div class="table-responsive card card-stat">
+    <table class="table align-middle mb-0" id="dataTable">
+        <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(m => m.Name)</th>
+            <th class="text-end">Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(_ => item.Name)</td>
+                <td class="text-end">
+                    @Html.ActionLink("Изменить", "Edit", new { id = item.Id }, new { @class = "btn btn-sm btn-outline-primary" })
+                    @using (Html.BeginForm("Delete", "Categories", new { id = item.Id }, FormMethod.Post, true, new { @class = "d-inline js-confirm-delete", data_confirm = "Удалить категорию?" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Удалить</button>
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,36 @@
+@model Sale
+@{
+    ViewBag.Title = $"Продажа №{Model.Id}";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Продажа №@Model.Id</h1>
+    @Html.ActionLink("К списку", "Index", null, null, new { @class = "btn btn-outline-secondary" })
+</div>
+
+<div class="card card-stat p-3 col-md-8">
+    <p><strong>Дата:</strong> @Model.SaleDate.ToString("dd.MM.yyyy")</p>
+    <p><strong>Сумма:</strong> @Model.TotalAmount.ToString("N2") ₽</p>
+
+    <table class="table mb-0">
+        <thead>
+        <tr>
+            <th>Препарат</th>
+            <th>Кол-во</th>
+            <th>Цена</th>
+            <th>Сумма</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>@item.Medicine?.Name</td>
+                <td>@item.Quantity</td>
+                <td>@item.UnitPrice.ToString("N2") ₽</td>
+                <td>@((item.UnitPrice * item.Quantity).ToString("N2")) ₽</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

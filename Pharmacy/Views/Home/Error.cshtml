@@ -1,0 +1,11 @@
+@model Pharmacy.Controllers.ErrorViewModel
+@{
+    ViewBag.Title = "Ошибка";
+}
+
+<h1 class="h3 text-danger">Ошибка</h1>
+<p>При обработке запроса произошла ошибка.</p>
+@if (Model.ShowRequestId)
+{
+    <p class="text-muted"><strong>Request ID:</strong> <code>@Model.RequestId</code></p>
+}

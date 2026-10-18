@@ -1,0 +1,51 @@
+@model Medicine
+@{
+    ViewBag.Title = "Редактирование препарата";
+    var categories = ViewBag.Categories as SelectList;
+}
+
+<h1 class="h3 mb-3">Редактирование препарата</h1>
+
+@using (Html.BeginForm("Edit", "Medicines", FormMethod.Post, new { @class = "card card-stat p-3 col-md-7 js-validate-form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="mb-3">
+        @Html.LabelFor(m => m.Name, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", required = "required" })
+        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+    </div>
+    <div class="mb-3">
+        @Html.LabelFor(m => m.Manufacturer, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Manufacturer, new { @class = "form-control", required = "required" })
+        @Html.ValidationMessageFor(m => m.Manufacturer, "", new { @class = "text-danger" })
+    </div>
+    <div class="mb-3">
+        @Html.LabelFor(m => m.CategoryId, new { @class = "form-label" })
+        @Html.DropDownListFor(m => m.CategoryId, categories, new { @class = "form-select", required = "required" })
+        @Html.ValidationMessageFor(m => m.CategoryId, "", new { @class = "text-danger" })
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            @Html.LabelFor(m => m.Price, new { @class = "form-label" })
+            @Html.TextBoxFor(m => m.Price, new { @class = "form-control", type = "number", step = "0.01", min = "0.01", required = "required" })
+            @Html.ValidationMessageFor(m => m.Price, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-6 mb-3">
+            @Html.LabelFor(m => m.StockQuantity, new { @class = "form-label" })
+            @Html.TextBoxFor(m => m.StockQuantity, new { @class = "form-control", type = "number", min = "0", required = "required" })
+            @Html.ValidationMessageFor(m => m.StockQuantity, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-check mb-3">
+        @Html.CheckBoxFor(m => m.RequiresPrescription, new { @class = "form-check-input" })
+        @Html.LabelFor(m => m.RequiresPrescription, new { @class = "form-check-label" })
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-pharmacy">Сохранить</button>
+        @Html.ActionLink("Отмена", "Index", null, null, new { @class = "btn btn-outline-secondary" })
+    </div>
+}
